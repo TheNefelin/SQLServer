@@ -1,11 +1,17 @@
 # SQL Server Proyects
 
-## Links.sql
-### Related Projects
-- [App Deploy](https://www.francisco-dev.cl/) 
-- [Api Deploy](https://bsite.net/metalflap/index.html) 
+## Links.sql Related Projects
 
-- [App Repo](https://github.com/TheNefelin/portafolio-next13) 
-- [Api Repo](https://github.com/TheNefelin/portafolio_api.NETCore6) 
+- [Portafolio Web Deploy](https://www.francisco-dev.cl/) 
+- [Portafolio Api Deploy](https://bsite.net/metalflap/index.html) 
 
-## Proyecto_Guias
+- [Portafolio Web Repo](https://github.com/TheNefelin/portafolio-next13) 
+- [Portafolio Api Repo](https://github.com/TheNefelin/portafolio_api.NETCore6) 
+
+## Proyecto_Guias.sql Related Projects
+
+- [Guia Web Deploy](#) 
+- [Guia Api Deploy](https://bsite.net/metalflap/index.html) 
+
+- [Guia Web Repo](https://github.com/TheNefelin/guias-juegos-next13-ts) 
+- [Guia Api Repo](https://github.com/TheNefelin/portafolio_api.NETCore6) 
