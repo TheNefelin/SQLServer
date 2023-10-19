@@ -1,4 +1,688 @@
-﻿
+﻿USE [db_name]
+GO
+/****** Object:  Table [dbo].[gj_aventura_usuario]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_aventura_usuario](
+	[id_aventura] [int] NOT NULL,
+	[id_usuario] [int] NOT NULL,
+	[estado] [bit] NOT NULL,
+ CONSTRAINT [PK_gj_aventura_usuario] PRIMARY KEY CLUSTERED 
+(
+	[id_aventura] ASC,
+	[id_usuario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_aventuras]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_aventuras](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[descripcion] [varchar](800) NOT NULL,
+	[importante] [bit] NOT NULL,
+	[orden] [int] NOT NULL,
+	[id_guia] [int] NOT NULL,
+ CONSTRAINT [PK_dj_aventuras] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_fuentes]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_fuentes](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](50) NOT NULL,
+	[img_url] [varchar](255) NOT NULL,
+	[id_juego] [int] NOT NULL,
+ CONSTRAINT [PK_gj_fuentes] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_guia_usuario]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_guia_usuario](
+	[id_guia] [int] NOT NULL,
+	[id_usuario] [int] NOT NULL,
+	[estado] [bit] NOT NULL,
+ CONSTRAINT [PK_gj_guia_usuario] PRIMARY KEY CLUSTERED 
+(
+	[id_guia] ASC,
+	[id_usuario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_guias]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_guias](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](100) NOT NULL,
+	[orden] [int] NOT NULL,
+	[id_juego] [int] NOT NULL,
+ CONSTRAINT [PK_gj_guias] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_img_aventuras]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_img_aventuras](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[img_url] [varchar](255) NOT NULL,
+	[orden] [int] NOT NULL,
+	[id_aventura] [int] NOT NULL,
+ CONSTRAINT [PK_gj_img_aventuras] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_img_background]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_img_background](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[img_url] [varchar](255) NOT NULL,
+	[id_juego] [int] NOT NULL,
+ CONSTRAINT [PK_gj_img_background] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_juegos]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_juegos](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](50) NOT NULL,
+	[img_cover] [varchar](255) NOT NULL,
+	[descripcion] [varchar](255) NOT NULL,
+ CONSTRAINT [PK_gj_juegos] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_personajes]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_personajes](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](50) NOT NULL,
+	[descripcion] [varchar](255) NOT NULL,
+	[img_url] [varchar](255) NOT NULL,
+	[id_juego] [int] NOT NULL,
+ CONSTRAINT [PK_gj_personajes] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[gj_usuarios]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[gj_usuarios](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[usuario] [varchar](50) NOT NULL,
+	[token] [varchar](255) NOT NULL,
+ CONSTRAINT [PK_gj_usuarios] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[gj_aventura_usuario]  WITH CHECK ADD  CONSTRAINT [FK_gj_aventura_usuario_gj_aventuras] FOREIGN KEY([id_aventura])
+REFERENCES [dbo].[gj_aventuras] ([id])
+GO
+ALTER TABLE [dbo].[gj_aventura_usuario] CHECK CONSTRAINT [FK_gj_aventura_usuario_gj_aventuras]
+GO
+ALTER TABLE [dbo].[gj_aventuras]  WITH CHECK ADD  CONSTRAINT [FK_gj_aventuras_gj_guias] FOREIGN KEY([id_guia])
+REFERENCES [dbo].[gj_guias] ([id])
+GO
+ALTER TABLE [dbo].[gj_aventuras] CHECK CONSTRAINT [FK_gj_aventuras_gj_guias]
+GO
+ALTER TABLE [dbo].[gj_fuentes]  WITH CHECK ADD  CONSTRAINT [FK_gj_fuentes_gj_juegos] FOREIGN KEY([id_juego])
+REFERENCES [dbo].[gj_juegos] ([id])
+GO
+ALTER TABLE [dbo].[gj_fuentes] CHECK CONSTRAINT [FK_gj_fuentes_gj_juegos]
+GO
+ALTER TABLE [dbo].[gj_guia_usuario]  WITH CHECK ADD  CONSTRAINT [FK_gj_guia_usuario_gj_guias] FOREIGN KEY([id_guia])
+REFERENCES [dbo].[gj_guias] ([id])
+GO
+ALTER TABLE [dbo].[gj_guia_usuario] CHECK CONSTRAINT [FK_gj_guia_usuario_gj_guias]
+GO
+ALTER TABLE [dbo].[gj_guias]  WITH CHECK ADD  CONSTRAINT [FK_gj_guias_gj_juegos] FOREIGN KEY([id_juego])
+REFERENCES [dbo].[gj_juegos] ([id])
+GO
+ALTER TABLE [dbo].[gj_guias] CHECK CONSTRAINT [FK_gj_guias_gj_juegos]
+GO
+ALTER TABLE [dbo].[gj_img_aventuras]  WITH CHECK ADD  CONSTRAINT [FK_gj_img_aventuras_gj_aventuras] FOREIGN KEY([id_aventura])
+REFERENCES [dbo].[gj_aventuras] ([id])
+GO
+ALTER TABLE [dbo].[gj_img_aventuras] CHECK CONSTRAINT [FK_gj_img_aventuras_gj_aventuras]
+GO
+ALTER TABLE [dbo].[gj_img_background]  WITH CHECK ADD  CONSTRAINT [FK_gj_img_background_gj_juegos] FOREIGN KEY([id_juego])
+REFERENCES [dbo].[gj_juegos] ([id])
+GO
+ALTER TABLE [dbo].[gj_img_background] CHECK CONSTRAINT [FK_gj_img_background_gj_juegos]
+GO
+ALTER TABLE [dbo].[gj_personajes]  WITH CHECK ADD  CONSTRAINT [FK_gj_personajes_gj_juegos] FOREIGN KEY([id_juego])
+REFERENCES [dbo].[gj_juegos] ([id])
+GO
+ALTER TABLE [dbo].[gj_personajes] CHECK CONSTRAINT [FK_gj_personajes_gj_juegos]
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_aventura_estado_put]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_aventura_estado_put]
+	@usuario AS VARCHAR(50),
+	@token AS VARCHAR(255),
+	@id_aventura AS INT,
+	@estado AS BIT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @id_usuario AS INT = ISNULL((SELECT id FROM gj_usuarios WHERE usuario = @usuario AND token = @token), 0)
+	
+	IF (@id_usuario <> 0)
+		BEGIN
+			IF EXISTS (SELECT * FROM gj_aventura_usuario WHERE id_aventura = @id_aventura AND id_usuario = @id_usuario) 
+				BEGIN
+					UPDATE gj_aventura_usuario SET
+						estado = @estado
+					WHERE
+						id_aventura = @id_aventura AND 
+						id_usuario = @id_usuario
+				END
+			ELSE 
+				BEGIN
+					INSERT INTO gj_aventura_usuario
+						(id_aventura, id_usuario, estado)
+					VALUES
+						(@id_aventura, @id_usuario, @estado)
+				END
+		END
+
+	SELECT @usuario AS usuario, @estado AS estado
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_aventuras]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_aventuras]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		id,
+		descripcion,
+		importante,
+		orden,
+		id_guia
+	FROM gj_aventuras
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_aventuras_byid_juego]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_aventuras_byid_juego]
+	@id_juego AS INT,
+	@user AS VARCHAR(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @id_usuario AS INT = ISNULL((SELECT id FROM gj_usuarios WHERE usuario = @user), 0)
+
+	IF (@id_usuario <> 0)
+		BEGIN
+			SELECT
+				a.id,
+				a.descripcion,
+				a.importante,
+				a.orden,
+				a.id_guia,
+				ISNULL((SELECT b.estado FROM gj_aventura_usuario b WHERE b.id_aventura = a.id AND b.id_usuario = @id_usuario), 0) AS estado
+			FROM gj_aventuras a 
+				INNER JOIN gj_guias b ON a.id_guia = b.id
+			WHERE
+				b.id_juego = @id_juego
+		END
+	ELSE
+		BEGIN
+			SELECT
+				a.id,
+				a.descripcion,
+				a.importante,
+				a.orden,
+				a.id_guia,
+				0 AS estado
+			FROM gj_aventuras a
+				INNER JOIN gj_guias b ON a.id_guia = b.id
+			WHERE
+				b.id_juego = @id_juego
+		END
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_aventuras_img]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_aventuras_img]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		id,
+		img_url,
+		orden,
+		id_aventura
+	FROM gj_img_aventuras
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_aventuras_img_byid_juego]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_aventuras_img_byid_juego]
+	@id_juego AS INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		a.id,
+		a.img_url,
+		a.orden,
+		a.id_aventura
+	FROM gj_img_aventuras a
+		INNER JOIN gj_aventuras b ON a.id_aventura = b.id
+		INNER JOIN gj_guias c ON b.id_guia = c.id
+	WHERE
+		c.id_juego = @id_juego
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_background_img]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_background_img]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		a.id,
+		a.img_url,
+		a.id_juego
+	FROM gj_img_background a
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_background_img_byid_juego]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_background_img_byid_juego]
+	@id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		a.id,
+		a.img_url,
+		a.id_juego
+	FROM gj_img_background a
+		INNER JOIN gj_juegos b ON a.id_juego = b.id
+	WHERE
+		b.id = @id
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_fuentes]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_fuentes]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		a.id,
+		a.nombre,
+		a.img_url,
+		a.id_juego
+	FROM gj_fuentes a
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_fuentes_byid_juego]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_fuentes_byid_juego]
+	@id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		a.id,
+		a.nombre,
+		a.img_url,
+		a.id_juego
+	FROM gj_fuentes a
+		INNER JOIN gj_juegos b ON a.id_juego = b.id
+	WHERE
+		b.id = @id
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_guia_estado_put]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_guia_estado_put]
+	@usuario AS VARCHAR(50),
+	@token AS VARCHAR(255),
+	@id_guia AS INT,
+	@estado AS BIT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @id_usuario AS INT = ISNULL((SELECT id FROM gj_usuarios WHERE usuario = @usuario AND token = @token), 0)
+	
+	IF (@id_usuario <> 0)
+		BEGIN
+			IF EXISTS (SELECT * FROM gj_guia_usuario WHERE id_guia = @id_guia AND id_usuario = @id_usuario) 
+				BEGIN
+					UPDATE gj_guia_usuario SET
+						estado = @estado
+					WHERE
+						id_guia = @id_guia AND 
+						id_usuario = @id_usuario
+				END
+			ELSE 
+				BEGIN
+					INSERT INTO gj_guia_usuario
+						(id_guia, id_usuario, estado)
+					VALUES
+						(@id_guia, @id_usuario, @estado)
+				END
+		END
+
+	SELECT @usuario AS usuario, @estado AS estado
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_guias]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_guias]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		id,
+		nombre,
+		orden,
+		id_juego
+	FROM gj_guias
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_guias_byid_juego]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_guias_byid_juego]
+	@id_juego AS INT,
+	@user AS VARCHAR(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @id_usuario AS INT = ISNULL((SELECT id FROM gj_usuarios WHERE usuario = @user), 0)
+
+	IF (@id_usuario <> 0)
+		BEGIN
+			SELECT
+				a.id,
+				a.nombre,
+				a.orden,
+				a.id_juego,
+				ISNULL((SELECT b.estado FROM gj_guia_usuario b WHERE b.id_guia = a.id AND b.id_usuario = @id_usuario), 0) AS estado
+			FROM gj_guias a
+			WHERE
+				a.id_juego = @id_juego
+			ORDER BY
+				a.orden
+		END
+	ELSE
+		BEGIN
+			SELECT
+				a.id,
+				a.nombre,
+				a.orden,
+				a.id_juego,
+				0 AS estado
+			FROM gj_guias a
+			WHERE
+				a.id_juego = @id_juego
+			ORDER BY
+				a.orden
+		END
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_juegos]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_juegos]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		id,
+		nombre,
+		img_cover,
+		descripcion
+	FROM gj_juegos
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_juegos_byid]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_juegos_byid]
+	@id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT 
+		a.id,
+		a.nombre,
+		a.img_cover,
+		a.descripcion,
+		(SELECT COUNT(b.id) FROM gj_personajes b WHERE a.id = b.id_juego) AS cant_personaes,
+		(SELECT COUNT(c.id) FROM gj_fuentes c WHERE a.id = c.id_juego) AS cant_fuentes,
+		(SELECT COUNT(d.id) FROM gj_guias d WHERE a.id = d.id_juego) AS cant_guias
+	FROM gj_juegos a
+	WHERE a.id = @id
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_personajes]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_personajes]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		id,
+		nombre,
+		descripcion,
+		img_url,
+		id_juego
+	FROM gj_personajes
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_personajes_byid_juego]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_personajes_byid_juego]
+	@id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		a.id,
+		a.nombre,
+		a.descripcion,
+		a.img_url,
+		a.id_juego
+	FROM gj_personajes a
+		INNER JOIN gj_juegos b ON a.id_juego = b.id
+	WHERE
+		b.id = @id
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[pa_gj_Usuario_post]    Script Date: 19-10-2023 16:13:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pa_gj_Usuario_post]
+	@usuario VARCHAR(255),
+	@token VARCHAR(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF EXISTS (SELECT id FROM gj_usuarios WHERE usuario = @usuario) 
+		BEGIN
+			UPDATE gj_usuarios SET
+				token = @token
+			WHERE
+				usuario = @usuario
+		END
+	ELSE
+		BEGIN
+			INSERT INTO gj_usuarios
+				(usuario, token)
+			VALUES
+				(@usuario, @token)
+		END
+
+	SELECT
+		id,
+		usuario,
+		token
+	FROM gj_usuarios
+	WHERE
+		usuario = @usuario AND
+		token = @token
+
+END
+GO
+
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+
 --UPDATE gj_juegos SET img_cover = 'https://bsite.net/metalflap/file?fileName=' + img_cover
 --UPDATE gj_img_background SET img_url = 'https://bsite.net/metalflap/file?fileName=' + img_url
 --UPDATE gj_personajes SET img_url = 'https://bsite.net/metalflap/file?fileName=' + img_url
@@ -26,20 +710,16 @@ EXECUTE pa_gj_personajes_byid_juego 1
 SELECT * FROM gj_guias
 EXECUTE pa_gj_guias
 EXECUTE pa_gj_guias_byid_juego 1, ''
-EXECUTE pa_gj_guias_byid_juego 1, 'sliferhunter8@gmail.com'
 
 SELECT * FROM gj_guia_usuario
-EXECUTE pa_gj_guia_estado_put 'sliferhunter8@gmail.com', '9227469a-efe8-4846-8dee-30ea52454a62', 4, 1
-EXECUTE pa_gj_guia_estado_put 'sliferhunter8@gmail.com', '', 1, 1
+--EXECUTE pa_gj_guia_estado_put '', '', 1, 1
 
 SELECT * FROM gj_aventuras
 EXECUTE pa_gj_aventuras
 EXECUTE pa_gj_aventuras_byid_juego 1, ''
-EXECUTE pa_gj_aventuras_byid_juego 1, 'sliferhunter8@gmail.com'
 
 SELECT * FROM gj_aventura_usuario
-EXECUTE pa_gj_aventura_estado_put 'sliferhunter8@gmail.com', 'f4e29d0f-7eee-47ae-ad55-9a625b4dbbb5', 6, 0
-EXECUTE pa_gj_aventura_estado_put 'sliferhunter8@gmail.com', '', 1, 1
+--EXECUTE pa_gj_aventura_estado_put '', '', 1, 1
 
 SELECT * FROM gj_img_aventuras
 EXECUTE pa_gj_aventuras_img
@@ -54,87 +734,87 @@ EXECUTE pa_gj_aventuras_img_byid_juego 1
 
 --------------------------------------------------------------------
 --------------------------------------------------------------------
-INSERT INTO gj_juegos
-	(id, nombre, img_cover, descripcion)
-VALUES
-	(1, 'Chrono Cross', 'cover_01.jpg', 'Lejos el mejor RPG en mi opinion personal. Precisamente, este juego, me inspiro hacer esta pagina.'),
-	(2, 'Comrades', 'cover_02.jpg', 'Creo que soy el único que juega a esto, los servidores siempre están vacíos.'),
-	(3, 'Darksiders 2', 'cover_03.jpg', 'Un MANJAR de los dioses.')
+--INSERT INTO gj_juegos
+--	(id, nombre, img_cover, descripcion)
+--VALUES
+--	(1, 'Chrono Cross', 'cover_01.jpg', 'Lejos el mejor RPG en mi opinion personal. Precisamente, este juego, me inspiro hacer esta pagina.'),
+--	(2, 'Comrades', 'cover_02.jpg', 'Creo que soy el único que juega a esto, los servidores siempre están vacíos.'),
+--	(3, 'Darksiders 2', 'cover_03.jpg', 'Un MANJAR de los dioses.')
 
-INSERT INTO gj_img_aventuras
-	(id, img_url, id_juego)
-VALUES
-	(1, 'background_01.jpg', 1),
-	(2, 'background_02.jpg', 1),
-	(3, 'z_ffxvc_background_01.jpg', 2),
-	(4, 'z-ds2_background_01.jpg', 3),
-	(5, 'z-ds2_mapa_01.jpg', 3),
-	(6, 'z-ds2_mapa_02.jpg', 3),
-	(7, 'z-ds2_mapa_03.jpg', 3),
-	(8, 'z-ds2_mapa_04.jpg', 3)
+--INSERT INTO gj_img_aventuras
+--	(id, img_url, id_juego)
+--VALUES
+--	(1, 'background_01.jpg', 1),
+--	(2, 'background_02.jpg', 1),
+--	(3, 'z_ffxvc_background_01.jpg', 2),
+--	(4, 'z-ds2_background_01.jpg', 3),
+--	(5, 'z-ds2_mapa_01.jpg', 3),
+--	(6, 'z-ds2_mapa_02.jpg', 3),
+--	(7, 'z-ds2_mapa_03.jpg', 3),
+--	(8, 'z-ds2_mapa_04.jpg', 3)
 
-INSERT INTO gj_fuentes
-	(id, nombre, img_url, id_juego)
-VALUES
-	(1, 'Guia', 'https://guiamania.com/41154/', 1),
-	(2, 'Window Frame', 'https://www.ign.com/wikis/chrono-cross/Window_Frames/', 1),
-	(3, 'Finales', 'https://game8.co/games/Chrono-Cross-Radical-Dreamers-Edition/archives/375630/', 1),
-	(4, 'Items', 'https://game8.co/games/Chrono-Cross-Radical-Dreamers-Edition/archives/371977/', 1),
-	(6, 'Dragones', 'https://chrono.fandom.com/wiki/Chronopedia/', 1),
-	(7, 'Tecnicas', 'https://guiltybit.com/como-conseguir-las-tecnicas-definitivas-de-todos-los-personajes-en-chrono-cross/', 1),
-	(8, 'Criosphinx', 'https://chrono.fandom.com/wiki/Criosphinx/', 1),
-	(9, 'Bend of Time', 'https://chrono.fandom.com/wiki/Bend_of_Time/', 1),
-	(10, 'Triple Tech Delta Force', 'https://www.trueachievements.com/a356989/deadly-delta-achievement/', 1),
-	(11, 'Triple Tech Z-Slash', 'https://www.trueachievements.com/a356990/z-one-and-only-achievement/', 1)
+--INSERT INTO gj_fuentes
+--	(id, nombre, img_url, id_juego)
+--VALUES
+--	(1, 'Guia', 'https://guiamania.com/41154/', 1),
+--	(2, 'Window Frame', 'https://www.ign.com/wikis/chrono-cross/Window_Frames/', 1),
+--	(3, 'Finales', 'https://game8.co/games/Chrono-Cross-Radical-Dreamers-Edition/archives/375630/', 1),
+--	(4, 'Items', 'https://game8.co/games/Chrono-Cross-Radical-Dreamers-Edition/archives/371977/', 1),
+--	(6, 'Dragones', 'https://chrono.fandom.com/wiki/Chronopedia/', 1),
+--	(7, 'Tecnicas', 'https://guiltybit.com/como-conseguir-las-tecnicas-definitivas-de-todos-los-personajes-en-chrono-cross/', 1),
+--	(8, 'Criosphinx', 'https://chrono.fandom.com/wiki/Criosphinx/', 1),
+--	(9, 'Bend of Time', 'https://chrono.fandom.com/wiki/Bend_of_Time/', 1),
+--	(10, 'Triple Tech Delta Force', 'https://www.trueachievements.com/a356989/deadly-delta-achievement/', 1),
+--	(11, 'Triple Tech Z-Slash', 'https://www.trueachievements.com/a356990/z-one-and-only-achievement/', 1)
 
-INSERT INTO gj_personajes
-	(id, nombre, descripcion, img_url, id_juego)
-VALUES
-	(1, 'Serge', 'Se obtiene al inciar la aventura', 'https://bsite.net/metalflap/file?fileName=pj_serge.png', 1),
-	(2, 'Mojo', 'Se obtiene con el Shark Tooth Amulet', 'https://bsite.net/metalflap/file?fileName=pj_mojo.png', 1),
-	(3, 'Leena', 'Se obtiene rechazando a Kid 3 veces', 'https://bsite.net/metalflap/file?fileName=pj_leena.png', 1),
-	(4, 'Poshul', 'Se obtiene rechazando a Kid 3 veces o en Arni Village dandole el hueso', 'https://bsite.net/metalflap/file?fileName=pj_poshul.png', 1),
-	(5, 'Kid', 'Se obtiene en Termina o Cape Howl', 'https://bsite.net/metalflap/file?fileName=pj_kid.png', 1),
-	(6, 'Guile', 'Se obtiene en Termina hablando con él en el bar', 'https://bsite.net/metalflap/file?fileName=pj_guile.png', 1),
-	(7, 'Nikki', 'Se obtiene en Termina hablando con Miki en el barco de Magical Dreamers', 'https://bsite.net/metalflap/file?fileName=pj_nikki.png', 1),
-	(8, 'Pierre', 'Se obtiene en Termina entregandole el Heros Medal en la herreria', 'https://bsite.net/metalflap/file?fileName=pj_pierre.png', 1),
-	(9, 'Glenn', 'Se obtiene en Termina al decidir No salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_glenn.png', 1),
-	(10, 'Macha', 'Se obtiene en Termina al decidir No salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_macha.png', 1),
-	(11, 'Doc', 'Se obtiene en Termina al decidir No salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_doc.png', 1),
-	(12, 'Korcha', 'Se obtiene en Termina al decidir salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_korcha.png', 1),
-	(13, 'Greco', 'Se obtiene en Termina al decidir salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_greco.png', 1),
-	(14, 'Razzly', 'Se obtiene en Hydra Marsh al decidir salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_razzly.png', 1),
-	(15, 'Mel', 'Se obtiene en Guldove, despue se capturarla y salir de la isla', 'https://bsite.net/metalflap/file?fileName=pj_mel.png', 1),
-	(16, 'Pip', 'Se obtiene en el barco fantasma', 'https://bsite.net/metalflap/file?fileName=pj_pip.png', 1),
-	(17, 'Luccia', 'Se obtiene en Viper Manor al ir nuevamente', 'https://bsite.net/metalflap/file?fileName=pj_luccia.png', 1),
-	(18, 'Lynx', 'Se obtiene despues del evento en Fort Dragonia', 'https://bsite.net/metalflap/file?fileName=pj_lynx.png', 1),
-	(19, 'Sprigg', 'Se obtiene en el Mundo Abstracto', 'https://bsite.net/metalflap/file?fileName=pj_sprigg.png', 1),
-	(20, 'Harle', 'Se obtiene en el Mundo Abstracto', 'https://bsite.net/metalflap/file?fileName=pj_harle.png', 1),
-	(21, 'Radius', 'Se obtiene al vencerlo en Arni Village', 'https://bsite.net/metalflap/file?fileName=pj_radius.png', 1),
-	(22, 'Zappa', 'Se obtiene en Termina con Lynx', 'https://bsite.net/metalflap/file?fileName=pj_zappa.png', 1),
-	(23, 'Van', 'Se obtiene en Termina con Lynx', 'https://bsite.net/metalflap/file?fileName=pj_van.png', 1),
-	(24, 'Norris', 'Se obtiene en Viper Manor si Radius esta en tu equipo', 'https://bsite.net/metalflap/file?fileName=pj_norris.png', 1),
-	(25, 'Starky', 'Se obtiene venciendolo en la isla de Sky Dragon', 'https://bsite.net/metalflap/file?fileName=pj_starky.png', 1),
-	(26, 'Janice', 'Se obtiene en el Zelbess al ganar el SLAM de combate', 'https://bsite.net/metalflap/file?fileName=pj_janice.png', 1),
-	(27, 'Sneff', 'Se obtiene en Zelbess despues de derrotar al sabio', 'https://bsite.net/metalflap/file?fileName=pj_sneff.png', 1),
-	(28, 'Irenes', 'Se obtiene en Zelbess despues de derrotar al sabio', 'https://bsite.net/metalflap/file?fileName=pj_irenes.png', 1),
-	(29, 'Miki', 'Se obtiene en Zelbess despues de derrotar al sabio', 'https://bsite.net/metalflap/file?fileName=pj_miki.png', 1),
-	(30, 'Zoah', 'Se obtiene en el bar de Termina, habitacion oculta', 'https://bsite.net/metalflap/file?fileName=pj_zoah.png', 1),
-	(31, 'Karsh', 'Se obtiene en el bar de Termina, habitacion oculta', 'https://bsite.net/metalflap/file?fileName=pj_karsh.png', 1),
-	(32, 'Orcha', 'Se obtiene en Viper Manor despues de rescatar a Riddel', 'https://bsite.net/metalflap/file?fileName=pj_orcha.png', 1),
-	(33, 'Grobyc', 'Se obtiene en Viper Manor despues del combate con el Mecha', 'https://bsite.net/metalflap/file?fileName=pj_grobyc.png', 1),
-	(34, 'Skelly', 'Se obtiene al conseguir todos sus huesos, son 6 en total', 'https://bsite.net/metalflap/file?fileName=pj_skelly.png', 1),
-	(35, 'Riddel', 'Se obtiene al rescatarla del ejercito en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_riddel.png', 1),
-	(36, 'Viper', 'Se obtiene despues de rescatar a Riddel en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_viper.png', 1),
-	(37, 'Fargo', 'Se obtiene despues de rescatar a Riddel en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_fargo.png', 1),
-	(38, 'Marcy', 'Se obtiene despues de rescatar a Riddel en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_marcy.png', 1),
-	(39, 'Turnip', 'Se obtiene en Hermits Hideaway (AW), (HW), utilizando Ice Gun o Ice Breath con Poshul en tu equip', 'https://bsite.net/metalflap/file?fileName=pj_turnip.png', 1),
-	(40, 'Funguy', 'Se obtiene en Shadow Forest al darle el Mushroom al hombre de la cueva en la cascada', 'https://bsite.net/metalflap/file?fileName=pj_funguy.png', 1),
-	(41, 'Neofio', 'Se obtiene en la pileta de Viper Manor con la Life Sparkle', 'https://bsite.net/metalflap/file?fileName=pj_neofio.png', 1),
-	(42, 'Leah', 'Se obtiene al llegar a la isla de Gaeas Navel', 'https://bsite.net/metalflap/file?fileName=pj_leah.png', 1),
-	(43, 'Steena', 'Se obtiene en Guldove al mostrarle el Dragon Emblem', 'https://bsite.net/metalflap/file?fileName=pj_steena.png', 1),
-	(44, 'Draggy', 'Se obtiene al poner el huevo gigante en Fort Dragonia', 'https://bsite.net/metalflap/file?fileName=pj_draggy.png', 1),
-	(45, 'Orlha', 'Se obtiene en Guldove devolviendole el Sapphire Brooch como Serge', 'https://bsite.net/metalflap/file?fileName=pj_orlha.png', 1)
+--INSERT INTO gj_personajes
+--	(id, nombre, descripcion, img_url, id_juego)
+--VALUES
+--	(1, 'Serge', 'Se obtiene al inciar la aventura', 'https://bsite.net/metalflap/file?fileName=pj_serge.png', 1),
+--	(2, 'Mojo', 'Se obtiene con el Shark Tooth Amulet', 'https://bsite.net/metalflap/file?fileName=pj_mojo.png', 1),
+--	(3, 'Leena', 'Se obtiene rechazando a Kid 3 veces', 'https://bsite.net/metalflap/file?fileName=pj_leena.png', 1),
+--	(4, 'Poshul', 'Se obtiene rechazando a Kid 3 veces o en Arni Village dandole el hueso', 'https://bsite.net/metalflap/file?fileName=pj_poshul.png', 1),
+--	(5, 'Kid', 'Se obtiene en Termina o Cape Howl', 'https://bsite.net/metalflap/file?fileName=pj_kid.png', 1),
+--	(6, 'Guile', 'Se obtiene en Termina hablando con él en el bar', 'https://bsite.net/metalflap/file?fileName=pj_guile.png', 1),
+--	(7, 'Nikki', 'Se obtiene en Termina hablando con Miki en el barco de Magical Dreamers', 'https://bsite.net/metalflap/file?fileName=pj_nikki.png', 1),
+--	(8, 'Pierre', 'Se obtiene en Termina entregandole el Heros Medal en la herreria', 'https://bsite.net/metalflap/file?fileName=pj_pierre.png', 1),
+--	(9, 'Glenn', 'Se obtiene en Termina al decidir No salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_glenn.png', 1),
+--	(10, 'Macha', 'Se obtiene en Termina al decidir No salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_macha.png', 1),
+--	(11, 'Doc', 'Se obtiene en Termina al decidir No salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_doc.png', 1),
+--	(12, 'Korcha', 'Se obtiene en Termina al decidir salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_korcha.png', 1),
+--	(13, 'Greco', 'Se obtiene en Termina al decidir salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_greco.png', 1),
+--	(14, 'Razzly', 'Se obtiene en Hydra Marsh al decidir salvar a Kid', 'https://bsite.net/metalflap/file?fileName=pj_razzly.png', 1),
+--	(15, 'Mel', 'Se obtiene en Guldove, despue se capturarla y salir de la isla', 'https://bsite.net/metalflap/file?fileName=pj_mel.png', 1),
+--	(16, 'Pip', 'Se obtiene en el barco fantasma', 'https://bsite.net/metalflap/file?fileName=pj_pip.png', 1),
+--	(17, 'Luccia', 'Se obtiene en Viper Manor al ir nuevamente', 'https://bsite.net/metalflap/file?fileName=pj_luccia.png', 1),
+--	(18, 'Lynx', 'Se obtiene despues del evento en Fort Dragonia', 'https://bsite.net/metalflap/file?fileName=pj_lynx.png', 1),
+--	(19, 'Sprigg', 'Se obtiene en el Mundo Abstracto', 'https://bsite.net/metalflap/file?fileName=pj_sprigg.png', 1),
+--	(20, 'Harle', 'Se obtiene en el Mundo Abstracto', 'https://bsite.net/metalflap/file?fileName=pj_harle.png', 1),
+--	(21, 'Radius', 'Se obtiene al vencerlo en Arni Village', 'https://bsite.net/metalflap/file?fileName=pj_radius.png', 1),
+--	(22, 'Zappa', 'Se obtiene en Termina con Lynx', 'https://bsite.net/metalflap/file?fileName=pj_zappa.png', 1),
+--	(23, 'Van', 'Se obtiene en Termina con Lynx', 'https://bsite.net/metalflap/file?fileName=pj_van.png', 1),
+--	(24, 'Norris', 'Se obtiene en Viper Manor si Radius esta en tu equipo', 'https://bsite.net/metalflap/file?fileName=pj_norris.png', 1),
+--	(25, 'Starky', 'Se obtiene venciendolo en la isla de Sky Dragon', 'https://bsite.net/metalflap/file?fileName=pj_starky.png', 1),
+--	(26, 'Janice', 'Se obtiene en el Zelbess al ganar el SLAM de combate', 'https://bsite.net/metalflap/file?fileName=pj_janice.png', 1),
+--	(27, 'Sneff', 'Se obtiene en Zelbess despues de derrotar al sabio', 'https://bsite.net/metalflap/file?fileName=pj_sneff.png', 1),
+--	(28, 'Irenes', 'Se obtiene en Zelbess despues de derrotar al sabio', 'https://bsite.net/metalflap/file?fileName=pj_irenes.png', 1),
+--	(29, 'Miki', 'Se obtiene en Zelbess despues de derrotar al sabio', 'https://bsite.net/metalflap/file?fileName=pj_miki.png', 1),
+--	(30, 'Zoah', 'Se obtiene en el bar de Termina, habitacion oculta', 'https://bsite.net/metalflap/file?fileName=pj_zoah.png', 1),
+--	(31, 'Karsh', 'Se obtiene en el bar de Termina, habitacion oculta', 'https://bsite.net/metalflap/file?fileName=pj_karsh.png', 1),
+--	(32, 'Orcha', 'Se obtiene en Viper Manor despues de rescatar a Riddel', 'https://bsite.net/metalflap/file?fileName=pj_orcha.png', 1),
+--	(33, 'Grobyc', 'Se obtiene en Viper Manor despues del combate con el Mecha', 'https://bsite.net/metalflap/file?fileName=pj_grobyc.png', 1),
+--	(34, 'Skelly', 'Se obtiene al conseguir todos sus huesos, son 6 en total', 'https://bsite.net/metalflap/file?fileName=pj_skelly.png', 1),
+--	(35, 'Riddel', 'Se obtiene al rescatarla del ejercito en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_riddel.png', 1),
+--	(36, 'Viper', 'Se obtiene despues de rescatar a Riddel en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_viper.png', 1),
+--	(37, 'Fargo', 'Se obtiene despues de rescatar a Riddel en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_fargo.png', 1),
+--	(38, 'Marcy', 'Se obtiene despues de rescatar a Riddel en Viper Manor', 'https://bsite.net/metalflap/file?fileName=pj_marcy.png', 1),
+--	(39, 'Turnip', 'Se obtiene en Hermits Hideaway (AW), (HW), utilizando Ice Gun o Ice Breath con Poshul en tu equip', 'https://bsite.net/metalflap/file?fileName=pj_turnip.png', 1),
+--	(40, 'Funguy', 'Se obtiene en Shadow Forest al darle el Mushroom al hombre de la cueva en la cascada', 'https://bsite.net/metalflap/file?fileName=pj_funguy.png', 1),
+--	(41, 'Neofio', 'Se obtiene en la pileta de Viper Manor con la Life Sparkle', 'https://bsite.net/metalflap/file?fileName=pj_neofio.png', 1),
+--	(42, 'Leah', 'Se obtiene al llegar a la isla de Gaeas Navel', 'https://bsite.net/metalflap/file?fileName=pj_leah.png', 1),
+--	(43, 'Steena', 'Se obtiene en Guldove al mostrarle el Dragon Emblem', 'https://bsite.net/metalflap/file?fileName=pj_steena.png', 1),
+--	(44, 'Draggy', 'Se obtiene al poner el huevo gigante en Fort Dragonia', 'https://bsite.net/metalflap/file?fileName=pj_draggy.png', 1),
+--	(45, 'Orlha', 'Se obtiene en Guldove devolviendole el Sapphire Brooch como Serge', 'https://bsite.net/metalflap/file?fileName=pj_orlha.png', 1)
 
 --SET IDENTITY_INSERT gj_guias ON
 --GO
