@@ -725,12 +725,16 @@ SELECT * FROM gj_img_aventuras
 EXECUTE pa_gj_aventuras_img
 EXECUTE pa_gj_aventuras_img_byid_juego 1
 
---TRUNCATE TABLE gj_usuarios
 --TRUNCATE TABLE gj_guias
---TRUNCATE TABLE gj_guia_usuario
 --TRUNCATE TABLE gj_aventuras
---TRUNCATE TABLE gj_aventura_usuario
 --TRUNCATE TABLE gj_img_aventuras
+
+SELECT * FROM gj_usuarios
+SELECT * FROM gj_guia_usuario
+SELECT * FROM gj_aventura_usuario
+--TRUNCATE TABLE gj_usuarios
+--TRUNCATE TABLE gj_guia_usuario
+--TRUNCATE TABLE gj_aventura_usuario
 
 --------------------------------------------------------------------
 --------------------------------------------------------------------
