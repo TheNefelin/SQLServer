@@ -1,4 +1,4 @@
-USE bd_pmanager
+USE bd_password_manager
 GO
 
 -- Tablas -------------------------------------------------------
