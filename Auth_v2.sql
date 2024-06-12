@@ -1,23 +1,17 @@
-DROP TABLE __EFMigrationsHistory
+DROP TABLE PF_Enlaces
+DROP TABLE PF_EnlacesGrps
+DROP TABLE PF_Youtube
+DROP TABLE PF_Pro_Leng
+DROP TABLE PF_Pro_Tec
+DROP TABLE PF_Proyectos
+DROP TABLE PF_Lenguajes
+DROP TABLE PF_Tecnologias
 
-DROP TABLE F1_Carreras
-DROP TABLE F1_Pilotos
-DROP TABLE F1_Circuitos
-DROP TABLE F1_Escuderias
-DROP TABLE F1_Paises
+DROP TABLE PM_Core
+DROP TABLE PM_Plataforma
 
-DROP TABLE GJ_AventurasImg
-DROP TABLE GJ_AventurasUsuario
-DROP TABLE GJ_Aventuras
-DROP TABLE GJ_GuiasUsuario
-DROP TABLE GJ_Guias
-DROP TABLE GJ_FondosImg
-DROP TABLE GJ_Fuentes
-DROP TABLE GJ_Personajes
-DROP TABLE GJ_Juegos
-
-DROP TABLE Pass_Core
-DROP TABLE Pass_Plataforma
+DROP TABLE Auth_Usuario
+DROP TABLE Auth_Perfil
 
 -- Tablas -------------------------------------------------------
 -- --------------------------------------------------------------
@@ -41,9 +35,6 @@ CREATE TABLE Auth_Usuario (
 	FOREIGN KEY (Id_Perfil) REFERENCES Auth_Perfil(Id)
 )
 GO
-
-DROP TABLE Auth_Usuario
-DROP TABLE Auth_Perfil
 
 -- Data ---------------------------------------------------------
 -- --------------------------------------------------------------

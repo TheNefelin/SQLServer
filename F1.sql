@@ -63,32 +63,32 @@ GO
 INSERT INTO F1Paises
 	(Id, Nombre, UrlBandera)
 VALUES
-	(1, 'Finlandia', 'Finlandia.webp'),
-	(2, 'China', 'China.webp'),
-	(3, 'Francia', 'Francia.webp'),
-	(4, 'Austria', 'Austria.webp'),
-	(5, 'Japón', 'Japan.webp'),
-	(6, 'Canadá', 'Canada.webp'),
-	(7, 'España', 'España.webp'),
-	(8, 'Mónaco', 'Monaco.webp'),
-	(9, 'Dinamarca', 'Dinamarca.webp'),
-	(10, 'Alemania', 'Alemania.webp'),
-	(11, 'Reino Unido', 'ReinoUnido.webp'),
-	(12, 'Australia', 'Australia.webp'),
-	(13, 'Bélgica', 'Belgica.webp'),
-	(14, 'México', 'Mexico.webp'),
-	(15, 'Estados Unidos', 'EstadosUnidos.webp'),
-	(16, 'Suiza', 'Suiza.webp'),
-	(17, 'Italia ', 'Italia.webp'),
-	(18, 'Bahréin', 'Bahrain.webp'),
-	(19, 'Arabia Saudita', 'ArabiaSaudita.webp'),
-	(20, 'Azerbaiyan', 'Azerbaiyan.webp'),
-	(21, 'Hungria', 'Hungria.webp'),
-	(22, 'Holanda', 'Holanda.webp'),
-	(23, 'Singapore', 'Singapore.webp'),
-	(24, 'Qatar', 'Qatar.webp'),
-	(25, 'Brazil', 'Brazil.webp'),
-	(26, 'AbuDhabi', 'AbuDhabi.webp')
+	(1, 'Finlandia', 'PaisFinlandia.webp'),
+	(2, 'China', 'PaisChina.webp'),
+	(3, 'Francia', 'PaisFrancia.webp'),
+	(4, 'Austria', 'PaisAustria.webp'),
+	(5, 'Japón', 'PaisJapan.webp'),
+	(6, 'Canadá', 'PaisCanada.webp'),
+	(7, 'España', 'PaisEspaña.webp'),
+	(8, 'Mónaco', 'PaisMonaco.webp'),
+	(9, 'Dinamarca', 'PaisDinamarca.webp'),
+	(10, 'Alemania', 'PaisAlemania.webp'),
+	(11, 'Reino Unido', 'PaisReinoUnido.webp'),
+	(12, 'Australia', 'PaisAustralia.webp'),
+	(13, 'Bélgica', 'PaisBelgica.webp'),
+	(14, 'México', 'PaisMexico.webp'),
+	(15, 'Estados Unidos', 'PaisEstadosUnidos.webp'),
+	(16, 'Suiza', 'PaisSuiza.webp'),
+	(17, 'Italia ', 'PaisItalia.webp'),
+	(18, 'Bahréin', 'PaisBahrain.webp'),
+	(19, 'Arabia Saudita', 'PaisArabiaSaudita.webp'),
+	(20, 'Azerbaiyan', 'PaisAzerbaiyan.webp'),
+	(21, 'Hungria', 'PaisHungria.webp'),
+	(22, 'Holanda', 'PaisHolanda.webp'),
+	(23, 'Singapore', 'PaisSingapore.webp'),
+	(24, 'Qatar', 'PaisQatar.webp'),
+	(25, 'Brazil', 'PaisBrazil.webp'),
+	(26, 'AbuDhabi', 'PaisAbuDhabi.webp')
 GO
 SET IDENTITY_INSERT F1Paises OFF
 GO
@@ -98,45 +98,47 @@ GO
 INSERT INTO F1Escuderias
 	(Id, Nombre, UrlAuto, IdPais)
 VALUES
-	(1, 'VCARB', '', 17),
-	(2, 'Alpine', '', 3),
-	(3, 'Stake F1 Team', '', 16),
-	(4, 'Aston Martin', '', 11),
-	(5, 'Ferrari', '', 17),
-	(6, 'Haas', '', 15),
-	(7, 'McLaren', '', 11),
-	(8, 'Mercedes', '', 10),
-	(9, 'Red Bull', '', 4),
-	(10, 'Williams', '', 11)
+	(1, 'VCARB', 'RacingCar01.webp', 17),
+	(2, 'Alpine', 'RacingCar02.webp', 3),
+	(3, 'Stake F1 Team', 'RacingCar03.webp', 16),
+	(4, 'Aston Martin', 'RacingCar04.webp', 11),
+	(5, 'Ferrari', 'RacingCar05.webp', 17),
+	(6, 'Haas', 'RacingCar06.webp', 15),
+	(7, 'McLaren', 'RacingCar07.webp', 11),
+	(8, 'Mercedes', 'RacingCar08.webp', 10),
+	(9, 'Red Bull', 'RacingCar09.webp', 4),
+	(10, 'Williams', 'RacingCar10.webp', 11)
 GO
 SET IDENTITY_INSERT F1Escuderias OFF
 GO
 
+UPDATE F1Pilotos SET UrlPerfil = 'Piloto' + UrlPerfil
+SELECT * FROM F1Pilotos
 SET IDENTITY_INSERT F1Pilotos ON
 GO
 INSERT INTO F1Pilotos
 	(Id, Nombre, FechaNaci, Estatura, Peso, Dorsal, UrlPerfil, EstaVivo, Puntos, IdPais, IdEscuderia)
 VALUES
-	(1, 'Valtteri Bottas', '1989-08-28', 1.73, 70, 77, 'ValtteriBottas.webp', 1, 0, 1, 3),
-	(2, 'Guanyu Zhou', '1999-05-30', 1.75, 63, 24, 'GuanyuZhou.webp', 1, 0, 2, 3),
-	(3, 'Esteban Ocon', '1996-09-17', 1.86, 66, 31, 'EstebanOcon.webp', 1, 0, 3, 2),
-	(4, 'Pierre Gasly', '1996-02-17', 1.77, 70, 10, 'PierreGasly.webp', 1, 0, 3, 2),
-	(5, 'Nyck de Vries', '1989-07-01', 1.8, 71, 3, 'NyckDeVries.webp', 1, 0, 4, 1),
-	(6, 'Yuki Tsunoda', '2000-05-11', 1.59, 54, 22, 'YukiTsunoda.webp', 1, 0, 5, 1),
-	(7, 'Lance Stroll', '1998-10-29', 1.82, 70, 18, 'LanceStroll.webp', 1, 0, 6, 4),
-	(8, 'Fernando Alonso', '1981-07-29', 1.71, 68, 14, 'FernandoAlonso.webp', 1, 0, 7, 4),
-	(9, 'Charles Leclerc', '1997-10-16', 1.8, 65, 16, 'CharlesLeclerc.webp', 1, 0, 8, 5),
-	(10, 'Carlos Sainz', '1994-09-01', 1.77, 66, 55, 'CarlosSainz.webp', 1, 0, 7, 5),
-	(11, 'Kevin Magnussen', '1992-10-05', 1.74, 68, 20, 'KevinMagnussen.webp', 1, 0, 9, 6),
-	(12, 'Nico Hulkenberg', '1987-08-19', 1.85, 74, 27, 'NicoHulkenberg.webp', 1, 0, 10, 6),
-	(13, 'Lando Norris', '1999-11-13', 1.7, 68, 4, 'LandoNorris.webp', 1, 0, 11, 7),
-	(14, 'Oscar Piastri', '2001-04-06', 1.78, 68, 81, 'OscarPiastri.webp', 1, 0, 12, 7),
-	(15, 'Lewis Hamilton', '1985-01-07', 1.74, 68, 44, 'LewisHamilton.webp', 1, 0, 12, 8),
-	(16, 'George Russell', '1998-02-15', 1.85, 70, 63, 'GeorgeRussell.webp', 1, 0, 11, 8),
-	(17, 'Max Verstappen', '1997-09-30', 1.8, 67, 1, 'MaxVerstappen.webp', 1, 0, 13, 9),
-	(18, 'Sergio Pérez', '1990-01-26', 1.73, 64, 11, 'SergioPerez.webp', 1, 0, 14, 9),
-	(19, 'Alexander Albon', '1996-03-23', 1.86, 71, 23, 'AlexanderAlbon.webp', 1, 0, 11, 10),
-	(20, 'Logan Sargeant', '2000-12-31', 1.81, 71, 2, 'LoganSargeant.webp', 1, 0, 15, 10)
+	(1, 'Valtteri Bottas', '1989-08-28', 1.73, 70, 77, 'PilotoValtteriBottas.webp', 1, 0, 1, 3),
+	(2, 'Guanyu Zhou', '1999-05-30', 1.75, 63, 24, 'PilotoGuanyuZhou.webp', 1, 0, 2, 3),
+	(3, 'Esteban Ocon', '1996-09-17', 1.86, 66, 31, 'PilotoEstebanOcon.webp', 1, 0, 3, 2),
+	(4, 'Pierre Gasly', '1996-02-17', 1.77, 70, 10, 'PilotoPierreGasly.webp', 1, 0, 3, 2),
+	(5, 'Daniel Ricciardo', '1989-07-01', 1.79, 71, 3, 'PilotoDanielRicciardo.webp', 1, 0, 4, 1),
+	(6, 'Yuki Tsunoda', '2000-05-11', 1.59, 54, 22, 'PilotoYukiTsunoda.webp', 1, 0, 5, 1),
+	(7, 'Lance Stroll', '1998-10-29', 1.82, 70, 18, 'PilotoLanceStroll.webp', 1, 0, 6, 4),
+	(8, 'Fernando Alonso', '1981-07-29', 1.71, 68, 14, 'PilotoFernandoAlonso.webp', 1, 0, 7, 4),
+	(9, 'Charles Leclerc', '1997-10-16', 1.8, 65, 16, 'PilotoCharlesLeclerc.webp', 1, 0, 8, 5),
+	(10, 'Carlos Sainz', '1994-09-01', 1.77, 66, 55, 'PilotoCarlosSainz.webp', 1, 0, 7, 5),
+	(11, 'Kevin Magnussen', '1992-10-05', 1.74, 68, 20, 'PilotoKevinMagnussen.webp', 1, 0, 9, 6),
+	(12, 'Nico Hulkenberg', '1987-08-19', 1.85, 74, 27, 'PilotoNicoHulkenberg.webp', 1, 0, 10, 6),
+	(13, 'Lando Norris', '1999-11-13', 1.7, 68, 4, 'PilotoLandoNorris.webp', 1, 0, 11, 7),
+	(14, 'Oscar Piastri', '2001-04-06', 1.78, 68, 81, 'PilotoOscarPiastri.webp', 1, 0, 12, 7),
+	(15, 'Lewis Hamilton', '1985-01-07', 1.74, 68, 44, 'PilotoLewisHamilton.webp', 1, 0, 12, 8),
+	(16, 'George Russell', '1998-02-15', 1.85, 70, 63, 'PilotoGeorgeRussell.webp', 1, 0, 11, 8),
+	(17, 'Max Verstappen', '1997-09-30', 1.8, 67, 1, 'PilotoMaxVerstappen.webp', 1, 0, 13, 9),
+	(18, 'Sergio Pérez', '1990-01-26', 1.73, 64, 11, 'PilotoSergioPerez.webp', 1, 0, 14, 9),
+	(19, 'Alexander Albon', '1996-03-23', 1.86, 71, 23, 'PilotoAlexanderAlbon.webp', 1, 0, 11, 10),
+	(20, 'Logan Sargeant', '2000-12-31', 1.81, 71, 2, 'PilotoLoganSargeant.webp', 1, 0, 15, 10)
 GO
 SET IDENTITY_INSERT F1Pilotos OFF
 GO
