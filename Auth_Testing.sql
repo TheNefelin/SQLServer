@@ -43,25 +43,31 @@ GO
 -- Stored Procedure ---------------------------------------------
 -- --------------------------------------------------------------
 CREATE PROCEDURE Auth_Register
-	@Id VARCHAR(256),
 	@Email VARCHAR(100),
-    @Usuario NVARCHAR(100),
-    @Clave NVARCHAR(50)
+	@Usuario VARCHAR(100),
+    @Clave01 NVARCHAR(100),
+	@Clave02 NVARCHAR(100)
 AS
 BEGIN
 	SET NOCOUNT ON
 	
+	IF (@Clave01 <> @Clave02)
+		BEGIN
+			SELECT 400 AS StatusCode, 'Las Contraseñas no coinciden' AS StatusMessage
+			RETURN
+		END
+
+	IF EXISTS (SELECT Id FROM Usuarios WHERE Email = @Email OR Usuario = @Email)
+		BEGIN
+			SELECT 400 AS StatusCode, 'El Usuario ya Existe' AS StatusMessage
+			RETURN
+		END
+
     DECLARE @Salt VARBINARY(16)
     SET @Salt = CRYPT_GEN_RANDOM(16)
 
     DECLARE @Hash VARBINARY(64)
-    SET @Hash = HASHBYTES('SHA2_256', @Clave + CAST(@Salt AS NVARCHAR(32)))
-
-	IF EXISTS (SELECT Id FROM Usuarios WHERE Email = @Usuario OR Usuario = @Usuario)
-		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Usuario ya Existe' AS Msge
-			RETURN
-		END
+    SET @Hash = HASHBYTES('SHA2_256', @Clave01 + CAST(@Salt AS NVARCHAR(32)))
 
 	BEGIN TRY
 		BEGIN TRANSACTION
@@ -69,18 +75,19 @@ BEGIN
 		INSERT INTO Usuarios 
 			(Id, Usuario, Email, AuthHash, AuthSalt, Id_Perfil)
 		VALUES 
-			(@Id, @usuario, @usuario, @hash, @salt, 2)
+			(NEWID(), @Usuario, @Email, @hash, @salt, 2)
 			
 		COMMIT TRANSACTION
 
-		SELECT 201 AS StatusCode, 0 AS Id, 'Usuario Registrado Correctamente' AS Msge
+		SELECT 201 AS StatusCode, 'Usuario Registrado Correctamente' AS StatusMessage
     END TRY
     BEGIN CATCH
 		ROLLBACK TRANSACTION
 
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (Auth_Register)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (Auth_Register)' AS StatusMessage 
     END CATCH
 END
+
 GO
 
 CREATE PROCEDURE Auth_Login
