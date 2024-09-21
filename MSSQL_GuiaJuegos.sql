@@ -3,7 +3,7 @@ GO
 
 -- Tablas -------------------------------------------------------
 -- --------------------------------------------------------------
-CREATE TABLE GJ_Juegos (
+CREATE TABLE GJJuegos (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre VARCHAR(50) NOT NULL,
 	Descripcion VARCHAR(256) NOT NULL,
@@ -12,94 +12,94 @@ CREATE TABLE GJ_Juegos (
 )
 GO
 
-CREATE TABLE GJ_Personajes (
+CREATE TABLE GJPersonajes (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre VARCHAR(50) NOT NULL,
 	Descripcion VARCHAR(256) NOT NULL,
 	Img VARCHAR(256) NOT NULL,
 	Id_Juego INT NOT NULL,
-	FOREIGN KEY (Id_Juego) REFERENCES GJ_Juegos(Id)
+	FOREIGN KEY (Id_Juego) REFERENCES GJJuegos(Id)
 )
 GO
 
-CREATE TABLE GJ_Fuentes (
+CREATE TABLE GJFuentes (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre VARCHAR(50) NOT NULL,
 	Img VARCHAR(256) NOT NULL,
 	Id_Juego INT NOT NULL,
-	FOREIGN KEY (Id_Juego) REFERENCES GJ_Juegos(Id),
+	FOREIGN KEY (Id_Juego) REFERENCES GJJuegos(Id),
 )
 GO
 
-CREATE TABLE GJ_FondosImg (
+CREATE TABLE GJFondosImg (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Img VARCHAR(256) NOT NULL,
 	Id_Juego INT NOT NULL,
-	FOREIGN KEY (Id_Juego) REFERENCES GJ_Juegos(Id),
+	FOREIGN KEY (Id_Juego) REFERENCES GJJuegos(Id),
 )
 GO
 
-CREATE TABLE GJ_Guias (
+CREATE TABLE GJGuias (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre VARCHAR(100) NOT NULL,
 	Orden INT NOT NULL,
 	Id_Juego INT NOT NULL,
-	FOREIGN KEY (Id_Juego) REFERENCES GJ_Juegos(Id),
+	FOREIGN KEY (Id_Juego) REFERENCES GJJuegos(Id),
 )
 GO
 
-CREATE TABLE GJ_GuiasUsuario (
+CREATE TABLE GJGuiasUsuario (
 	Id_Guia INT NOT NULL,
 	Id_Usuario VARCHAR(256) NOT NULL,
 	Estado BIT NOT NULL,
 	PRIMARY KEY (Id_Guia, Id_Usuario),
-	FOREIGN KEY (Id_Guia) REFERENCES GJ_Guias(Id),
+	FOREIGN KEY (Id_Guia) REFERENCES GJGuias(Id),
 )
 GO
 
-CREATE TABLE GJ_Aventuras (
+CREATE TABLE GJAventuras (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Descripcion VARCHAR(800) NOT NULL,
 	Importante BIT NOT NULL,
 	Orden INT NOT NULL,
 	Id_Guia INT NOT NULL,
-	FOREIGN KEY (Id_Guia) REFERENCES GJ_Guias(Id),
+	FOREIGN KEY (Id_Guia) REFERENCES GJGuias(Id),
 )
 GO
 
-CREATE TABLE GJ_AventurasUsuario (
+CREATE TABLE GJAventurasUsuario (
 	Id_Aventura INT NOT NULL,
 	Id_Usuario VARCHAR(256) NOT NULL,
 	Estado BIT NOT NULL,
 	PRIMARY KEY (Id_Aventura, Id_Usuario),
-	FOREIGN KEY (Id_Aventura) REFERENCES GJ_Aventuras(Id),
+	FOREIGN KEY (Id_Aventura) REFERENCES GJAventuras(Id),
 )
 GO
 
-CREATE TABLE GJ_AventurasImg (
+CREATE TABLE GJAventurasImg (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Img VARCHAR(256) NOT NULL,
 	Orden INT NOT NULL,
 	Id_Aventura INT NOT NULL,
-	FOREIGN KEY (Id_Aventura) REFERENCES GJ_Aventuras(Id),
+	FOREIGN KEY (Id_Aventura) REFERENCES GJAventuras(Id),
 )
 GO
 
-DROP TABLE GJ_AventurasImg
-DROP TABLE GJ_AventurasUsuario
-DROP TABLE GJ_GuiasUsuario
-DROP TABLE GJ_Aventuras
-DROP TABLE GJ_Guias
-DROP TABLE GJ_FondosImg
-DROP TABLE GJ_Fuentes
-DROP TABLE GJ_Personajes
-DROP TABLE GJ_Juegos
+DROP TABLE GJAventurasImg
+DROP TABLE GJAventurasUsuario
+DROP TABLE GJGuiasUsuario
+DROP TABLE GJAventuras
+DROP TABLE GJGuias
+DROP TABLE GJFondosImg
+DROP TABLE GJFuentes
+DROP TABLE GJPersonajes
+DROP TABLE GJJuegos
 
 -- Data ---------------------------------------------------------
 -- --------------------------------------------------------------
-SET IDENTITY_INSERT GJ_Juegos ON
+SET IDENTITY_INSERT GJJuegos ON
 GO
-INSERT INTO GJ_Juegos
+INSERT INTO GJJuegos
 	(Id, Nombre, Descripcion, Img, Estado)
 VALUES
 	(1, 'Chrono Cross', 'Lejos el mejor RPG en mi opinion personal. Precisamente, este juego, me inspiro hacer esta pagina.', 'cc_cover.webp', 1),
@@ -107,12 +107,12 @@ VALUES
 	(3, 'Darksiders 2', 'Un MANJAR de los dioses.', 'ds2_cover.webp', 1),
 	(4, 'FFIX', 'Uno de los trofeos mas duros de conseguir', 'ffix_cover.webp', 1)
 GO
-SET IDENTITY_INSERT GJ_Juegos OFF
+SET IDENTITY_INSERT GJJuegos OFF
 GO
 
-SET IDENTITY_INSERT GJ_Personajes ON
+SET IDENTITY_INSERT GJPersonajes ON
 GO
-INSERT INTO GJ_Personajes
+INSERT INTO GJPersonajes
 	(Id, Nombre, Descripcion, Img, Id_Juego)
 VALUES
 	(1, 'Serge', 'Se obtiene al inciar la aventura', 'cc_character_serge.webp', 1),
@@ -161,12 +161,12 @@ VALUES
 	(44, 'Draggy', 'Se obtiene al poner el huevo gigante en Fort Dragonia', 'cc_character_draggy.webp', 1),
 	(45, 'Orlha', 'Se obtiene en Guldove devolviendole el Sapphire Brooch como Serge', 'cc_character_orlha.webp', 1)
 GO
-SET IDENTITY_INSERT GJ_Personajes OFF
+SET IDENTITY_INSERT GJPersonajes OFF
 GO
 
-SET IDENTITY_INSERT GJ_Fuentes ON
+SET IDENTITY_INSERT GJFuentes ON
 GO
-INSERT INTO GJ_Fuentes 
+INSERT INTO GJFuentes 
 	(Id, Nombre, Img, Id_Juego)
 VALUES
 	(1, 'Guia', 'https://guiamania.com/41154/', 1),
@@ -184,12 +184,12 @@ VALUES
 	(14, 'Trofeo: Beating the rigtime blues (angelo noctis)', 'https://www.youtube.com/watch?v=RWI-uaZsYAY&lc=UgxWdOT4ZJzoZmeEJix4AaABAg.9xkQXwbhDhM9xkVq_TWzy0', 4),
 	(15, 'Trofeo: A clean bill of health (chibikei)', 'https://www.youtube.com/watch?v=Vrh5KILchfc', 4)
 GO
-SET IDENTITY_INSERT GJ_Fuentes OFF
+SET IDENTITY_INSERT GJFuentes OFF
 GO
 
-SET IDENTITY_INSERT GJ_FondosImg ON
+SET IDENTITY_INSERT GJFondosImg ON
 GO
-INSERT INTO GJ_FondosImg
+INSERT INTO GJFondosImg
 	(Id, Img, Id_Juego)
 VALUES
 	(1, 'cc_background_01.webp', 1),
@@ -204,12 +204,12 @@ VALUES
 	(10, 'com_background_02.webp', 2),
 	(11, 'ffix_background_02.webp', 4)
 GO
-SET IDENTITY_INSERT GJ_FondosImg OFF
+SET IDENTITY_INSERT GJFondosImg OFF
 GO
 
-SET IDENTITY_INSERT GJ_Guias ON
+SET IDENTITY_INSERT GJGuias ON
 GO
-INSERT INTO GJ_Guias
+INSERT INTO GJGuias
 	(Id, Nombre, Orden, Id_Juego)
 VALUES
 	(1, 'El Sueño', 1, 1),
@@ -307,12 +307,12 @@ VALUES
 	(93, 'Shadows Edge - The Black Stone', 26, 3),
 	(94, 'El concurso de Ragtime', 1, 4)
 GO
-SET IDENTITY_INSERT GJ_Guias OFF
+SET IDENTITY_INSERT GJGuias OFF
 GO
 
-SET IDENTITY_INSERT GJ_Aventuras ON
+SET IDENTITY_INSERT GJAventuras ON
 GO
-INSERT INTO GJ_Aventuras
+INSERT INTO GJAventuras
 	(Id, Descripcion, Importante, Orden, Id_Guia)
 VALUES
 	(1, 'Obs: (HW) = Home World, (AW) = Another World debo validar (Turnip y Neofio)', 0, 1, 1),
@@ -950,12 +950,12 @@ VALUES
 	(633, '(V) Es posible derrotarme a mi, el Ragtime', 1, 16, 94),
 	(634, '(V) La Guerra de Lindblum comenzo en 1500', 1, 17, 94)
 GO
-SET IDENTITY_INSERT GJ_Aventuras OFF
+SET IDENTITY_INSERT GJAventuras OFF
 GO
 
-SET IDENTITY_INSERT GJ_AventurasImg ON
+SET IDENTITY_INSERT GJAventurasImg ON
 GO
-INSERT INTO GJ_AventurasImg
+INSERT INTO GJAventurasImg
 	(Id, Img, Orden, Id_Aventura)
 VALUES
 	(1, 'cc_frame_arnian_wood.webp', 1, 5),
@@ -1300,20 +1300,20 @@ VALUES
 	(340, 'com_set_01_c.webp', 3, 341),
 	(341, 'com_set_02_a.webp', 1, 346),
 	(342, 'com_set_02_b.webp', 2, 346)
-SET IDENTITY_INSERT GJ_AventurasImg OFF
+SET IDENTITY_INSERT GJAventurasImg OFF
 GO
 
 -- Query --------------------------------------------------------
 -- --------------------------------------------------------------
-SELECT * FROM GJ_Juegos
-SELECT * FROM GJ_Personajes
-SELECT * FROM GJ_Fuentes
-SELECT * FROM GJ_FondosImg
-SELECT * FROM GJ_Guias
-SELECT * FROM GJ_GuiasUsuario
-SELECT * FROM GJ_Aventuras
-SELECT * FROM GJ_AventurasUsuario
-SELECT * FROM GJ_AventurasImg
+SELECT * FROM GJJuegos
+SELECT * FROM GJPersonajes
+SELECT * FROM GJFuentes
+SELECT * FROM GJFondosImg
+SELECT * FROM GJGuias
+SELECT * FROM GJGuiasUsuario
+SELECT * FROM GJAventuras
+SELECT * FROM GJAventurasUsuario
+SELECT * FROM GJAventurasImg
 
 -- --------------------------------------------------------------
 -- --------------------------------------------------------------
