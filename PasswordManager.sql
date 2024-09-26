@@ -1,5 +1,6 @@
-USE bd_password_manager
-GO
+
+DROP TABLE PM_Core
+DROP TABLE PM_Plataforma
 
 -- Tablas -------------------------------------------------------
 -- --------------------------------------------------------------
@@ -19,9 +20,6 @@ CREATE TABLE PM_Core (
 	FOREIGN KEY (Id_Usuario) REFERENCES Auth_Usuario(Id)
 )
 GO
-
-DROP TABLE PM_Core
-DROP TABLE PM_Plataforma
 
 -- Data ---------------------------------------------------------
 -- --------------------------------------------------------------

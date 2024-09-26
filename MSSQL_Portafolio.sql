@@ -1,5 +1,3 @@
-USE bd_portafolio
-GO
 
 -- Tablas -------------------------------------------------------
 -- --------------------------------------------------------------
@@ -206,7 +204,7 @@ VALUES
 	(5, 'Portafolio v2.0', 'PortafolioV2_1330x875.webp'),
 	(6, 'Arduino DHT Temperature Monitoring by Network', 'DHT_863x568.webp'),
 	(7, 'Transbank POS Integration v1.0', 'TransbankPOS_1330x875.webp'),
-	(8, 'El Cubo v2.0', 'elElCuboV2_1131x744.webp')
+	(8, 'El Cubo v2.0', 'ElCuboV2_1131x744.webp')
 GO
 SET IDENTITY_INSERT PF_Proyectos OFF
 GO
@@ -301,45 +299,49 @@ GO
 
 -- Stored Procedure ---------------------------------------------
 -- --------------------------------------------------------------
-CREATE PROCEDURE PF_EnlaceGrp_GetAll
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		Id,
-		Nombre,
-		Estado
-	FROM PF_EnlacesGrps
-END
-GO
-
-CREATE PROCEDURE PF_EnlaceGrp_GetById
+CREATE PROCEDURE PF_EnlaceGrp_Get
 	@Id INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT
-		Id,
-		Nombre,
-		Estado
-	FROM PF_EnlacesGrps
-	WHERE
-		Id = @Id
+	IF @Id < 0
+		BEGIN
+			SELECT 400 AS StatusCode, 'Ingrese un Id Valido' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	IF @Id = 0
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				Estado AS Status
+			FROM PF_EnlacesGrps
+		END
+	ELSE
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				Estado AS Status
+			FROM PF_EnlacesGrps
+			WHERE
+				Id = @Id
+		END
 END
 GO
 
 CREATE PROCEDURE PF_EnlaceGrp_Insert
-	@Nombre VARCHAR(50),
-	@Estado BIT
+	@Name VARCHAR(50),
+	@Status BIT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	IF EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Nombre = @Nombre)
+	IF EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Nombre = @Name)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Nombre ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Nombre ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
@@ -347,47 +349,47 @@ BEGIN
 		INSERT INTO PF_EnlacesGrps
 			(Nombre, Estado)
 		VALUES
-			(@Nombre, @Estado)
+			(@Name, @Status)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_EnlaceGrp_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_EnlaceGrp_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
 CREATE PROCEDURE PF_EnlaceGrp_Update
 	@Id INT,
-	@Nombre VARCHAR(50),
-	@Estado BIT
+	@Name VARCHAR(50),
+	@Status BIT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
     IF NOT EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-    IF EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Nombre = @Nombre)
+    IF EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Nombre = @Name)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Nombre ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Nombre ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		UPDATE PF_EnlacesGrps SET
-			Nombre = @Nombre, 
-			Estado = @Estado
+			Nombre = @Name, 
+			Estado = @Status
 		WHERE
 			Id = @Id
 
-		SELECT 202 AS StatusCode, @Id AS Id, 'Datos Modificados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Modificar los Datos (PF_EnlaceGrp_Update)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Modificar los Datos (PF_EnlaceGrp_Update)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
@@ -400,80 +402,84 @@ BEGIN
 
     IF NOT EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
     IF EXISTS (SELECT Id FROM PF_Enlaces WHERE Id_EnlaceGrp = @Id)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'Existe Dependencia Con PF_Enlaces' AS Msge 
+			SELECT 400 AS StatusCode, 'Existe Dependencia Con PF_Enlaces' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		DELETE FROM PF_EnlacesGrps WHERE Id = @Id
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_EnlaceGrp_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_EnlaceGrp_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-CREATE PROCEDURE PF_Enlace_GetAll
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		Id,
-		Nombre,
-		EnlaceUrl,
-		Estado,
-		Id_EnlaceGrp
-	FROM PF_Enlaces
-	ORDER BY
-		Nombre
-END
-GO
-
-CREATE PROCEDURE PF_Enlace_GetById
+CREATE PROCEDURE PF_Enlace_Get
 	@Id INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT
-		Id,
-		Nombre,
-		EnlaceUrl,
-		Estado,
-		Id_EnlaceGrp
-	FROM PF_Enlaces
-	WHERE
-		Id = @Id
+	IF @Id < 0
+		BEGIN
+			SELECT 400 AS StatusCode, 'Ingrese un Id Valido' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	IF @Id = 0 
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				EnlaceUrl AS Url,
+				Estado AS Status,
+				Id_EnlaceGrp AS id_UrlGrp
+			FROM PF_Enlaces
+			ORDER BY
+				Nombre
+		END
+	ELSE
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				EnlaceUrl AS Url,
+				Estado AS Status,
+				Id_EnlaceGrp AS id_UrlGrp
+			FROM PF_Enlaces
+			WHERE
+				Id = @Id
+		END
 END
 GO
 
 CREATE PROCEDURE PF_Enlace_Insert
-	@Nombre VARCHAR(50),
-	@EnlaceUrl VARCHAR(256),
-	@Estado BIT,
-	@Id_EnlaceGrp INT
+	@Name VARCHAR(50),
+	@Url VARCHAR(256),
+	@Status BIT,
+	@Id_UrlGrp INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	IF EXISTS (SELECT Id FROM PF_Enlaces WHERE Nombre = @Nombre)
+	IF EXISTS (SELECT Id FROM PF_Enlaces WHERE Nombre = @Name)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Nombre ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Nombre ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-    IF NOT EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Id = @Id_EnlaceGrp)
+    IF NOT EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Id = @Id_UrlGrp)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id_EnlaceGrp No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id_UrlGrp No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
@@ -481,57 +487,57 @@ BEGIN
 		INSERT INTO PF_Enlaces
 			(Nombre, EnlaceUrl, Estado, Id_EnlaceGrp)
 		VALUES
-			(@Nombre, @EnlaceUrl, @Estado, @Id_EnlaceGrp)
+			(@Name, @Url, @Status, @Id_UrlGrp)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_Enlace_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_Enlace_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
 CREATE PROCEDURE PF_Enlace_Update
 	@Id INT,
-	@Nombre VARCHAR(50),
-	@EnlaceUrl VARCHAR(256),
-	@Estado BIT,
-	@Id_EnlaceGrp INT
+	@Name VARCHAR(50),
+	@Url VARCHAR(256),
+	@Status BIT,
+	@Id_UrlGrp INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Id = @Id_EnlaceGrp)
+    IF NOT EXISTS (SELECT Id FROM PF_EnlacesGrps WHERE Id = @Id_UrlGrp)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id_EnlaceGrp No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id_UrlGrp No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
     IF NOT EXISTS (SELECT Id FROM PF_Enlaces WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-    IF EXISTS (SELECT Id FROM PF_Enlaces WHERE Nombre = @Nombre)
+    IF EXISTS (SELECT Id FROM PF_Enlaces WHERE Nombre = @Name)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Nombre ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Nombre ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		UPDATE PF_Enlaces SET
-			Nombre = @Nombre,
-			EnlaceUrl = @EnlaceUrl,
-			Estado = @Estado,
-			Id_EnlaceGrp = @Id_EnlaceGrp
+			Nombre = @Name,
+			EnlaceUrl = @Url,
+			Estado = @Status,
+			Id_EnlaceGrp = @Id_UrlGrp
 		WHERE
 			Id = @Id
 
-		SELECT 202 AS StatusCode, @Id AS Id, 'Datos Modificados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Modificar los Datos (PF_Enlace_Update)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Modificar los Datos (PF_Enlace_Update)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
@@ -544,66 +550,70 @@ BEGIN
 
     IF NOT EXISTS (SELECT Id FROM PF_Enlaces WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		DELETE FROM PF_Enlaces WHERE Id = @Id
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_Enlace_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_Enlace_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-CREATE PROCEDURE PF_Youtube_GetAll
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		Id,
-		Nombre,
-		Embed
-	FROM PF_Youtube
-END
-GO
-
-CREATE PROCEDURE PF_Youtube_GetById
+CREATE PROCEDURE PF_Youtube_Get
 	@Id INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT
-		Id,
-		Nombre,
-		Embed
-	FROM PF_Youtube
-	WHERE
-		Id = @Id
+	IF @Id < 0
+		BEGIN
+			SELECT 400 AS StatusCode, 'Ingrese un Id Valido' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	IF @Id = 0
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				Embed AS EmbedUrl
+			FROM PF_Youtube
+		END
+	ELSE
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				Embed AS EmbedUrl
+			FROM PF_Youtube
+			WHERE
+				Id = @Id
+		END
 END
 GO
 
 CREATE PROCEDURE PF_Youtube_Insert
-	@Nombre VARCHAR(50),
-	@Embed VARCHAR(50)
+	@Name VARCHAR(50),
+	@EmbedUrl VARCHAR(50)
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	IF EXISTS (SELECT Id FROM PF_Youtube WHERE Nombre = @Nombre)
+	IF EXISTS (SELECT Id FROM PF_Youtube WHERE Nombre = @Name)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Nombre ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Nombre ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-	IF EXISTS (SELECT Id FROM PF_Youtube WHERE Embed = @Embed)
+	IF EXISTS (SELECT Id FROM PF_Youtube WHERE Embed = @EmbedUrl)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Embed ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Embed ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
@@ -611,53 +621,53 @@ BEGIN
 		INSERT INTO PF_Youtube
 			(Nombre, Embed)
 		VALUES
-			(@Nombre, @Embed)
+			(@Name, @EmbedUrl)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_Youtube_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_Youtube_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
 CREATE PROCEDURE PF_Youtube_Update
 	@Id INT,
-	@Nombre VARCHAR(50),
-	@Embed VARCHAR(50)
+	@Name VARCHAR(50),
+	@EmbedUrl VARCHAR(50)
 AS
 BEGIN
 	SET NOCOUNT ON;
 
     IF NOT EXISTS (SELECT Id FROM PF_Youtube WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-    IF EXISTS (SELECT Id FROM PF_Youtube WHERE Nombre = @Nombre)
+    IF EXISTS (SELECT Id FROM PF_Youtube WHERE Nombre = @Name)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Nombre ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Nombre ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-    IF EXISTS (SELECT Id FROM PF_Youtube WHERE Embed = @Embed)
+    IF EXISTS (SELECT Id FROM PF_Youtube WHERE Embed = @EmbedUrl)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Embed ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Embed ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		UPDATE PF_Youtube SET
-			Nombre = @Nombre,
-			Embed = @Embed
+			Nombre = @Name,
+			Embed = @EmbedUrl
 		WHERE
 			Id = @Id
 
-		SELECT 202 AS StatusCode, @Id AS Id, 'Datos Modificados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Modificar los Datos (PF_Youtube_Update)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Modificar los Datos (PF_Youtube_Update)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
@@ -670,52 +680,56 @@ BEGIN
 
     IF NOT EXISTS (SELECT Id FROM PF_Youtube WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		DELETE FROM PF_Youtube WHERE Id = @Id
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_Youtube_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_Youtube_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-CREATE PROCEDURE PF_Proyecto_GetAll
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		Id,
-		Nombre,
-		ImgUrl
-	FROM PF_Proyectos
-END
-GO
-
-CREATE PROCEDURE PF_Proyecto_GetById
+CREATE PROCEDURE PF_Proyecto_Get
 	@Id INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT
-		Id,
-		Nombre,
-		ImgUrl
-	FROM PF_Proyectos
-	WHERE
-		Id = @Id
+	IF @Id < 0
+		BEGIN
+			SELECT 400 AS StatusCode, 'Ingrese un Id Valido' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	IF @Id = 0
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				ImgUrl
+			FROM PF_Proyectos
+		END
+	ELSE
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				ImgUrl
+			FROM PF_Proyectos
+			WHERE
+				Id = @Id
+		END
 END
 GO
 
 CREATE PROCEDURE PF_Proyecto_Insert
-	@Nombre VARCHAR(50),
+	@Name VARCHAR(50),
 	@ImgUrl VARCHAR(256)
 AS
 BEGIN
@@ -725,19 +739,19 @@ BEGIN
 		INSERT INTO PF_Proyectos
 			(Nombre, ImgUrl)
 		VALUES
-			(@Nombre, @ImgUrl)
+			(@Name, @ImgUrl)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_Proyecto_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_Proyecto_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
 CREATE PROCEDURE PF_Proyecto_Update
 	@Id INT,
-	@Nombre VARCHAR(50),
+	@Name VARCHAR(50),
 	@ImgUrl VARCHAR(256)
 AS
 BEGIN
@@ -745,15 +759,15 @@ BEGIN
 
 	BEGIN TRY
 		UPDATE PF_Proyectos SET
-			Nombre = @Nombre,
+			Nombre = @Name,
 			ImgUrl = @ImgUrl
 		WHERE
 			Id = @Id
 
-		SELECT 202 AS StatusCode, @Id AS Id, 'Datos Modificados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Modificar los Datos (PF_Proyecto_Update)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Modificar los Datos (PF_Proyecto_Update)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
@@ -766,64 +780,68 @@ BEGIN
 
     IF NOT EXISTS (SELECT Id FROM PF_Proyectos WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
     IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Leng WHERE Id_Proyecto = @Id)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'Existe Dependencia Con PF_Pro_Leng' AS Msge 
+			SELECT 400 AS StatusCode, 'Existe Dependencia Con PF_Pro_Leng' AS Msge, 0 AS Id
 			RETURN
 		END
 
     IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Tec WHERE Id_Proyecto = @Id)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'Existe Dependencia Con PF_Pro_Tec' AS Msge 
+			SELECT 400 AS StatusCode, 'Existe Dependencia Con PF_Pro_Tec' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		DELETE FROM PF_Proyectos WHERE Id = @Id
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_Proyecto_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_Proyecto_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-CREATE PROCEDURE PF_Lenguaje_GetAll
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		Id,
-		Nombre,
-		ImgUrl
-	FROM PF_Lenguajes
-END
-GO
-
-CREATE PROCEDURE PF_Lenguaje_GetById
+CREATE PROCEDURE PF_Lenguaje_Get
 	@Id INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT
-		Id,
-		Nombre,
-		ImgUrl
-	FROM PF_Lenguajes
-	WHERE
-		Id = @Id
+	IF @Id < 0
+		BEGIN
+			SELECT 400 AS StatusCode, 'Ingrese un Id Valido' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	IF @Id = 0
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				ImgUrl
+			FROM PF_Lenguajes
+		END
+	ELSE
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				ImgUrl
+			FROM PF_Lenguajes
+			WHERE
+				Id = @Id
+		END
 END
 GO
 
 CREATE PROCEDURE PF_Lenguaje_Insert
-	@Nombre VARCHAR(50),
+	@Name VARCHAR(50),
 	@ImgUrl VARCHAR(256)
 AS
 BEGIN
@@ -833,19 +851,19 @@ BEGIN
 		INSERT INTO PF_Lenguajes
 			(Nombre, ImgUrl)
 		VALUES
-			(@Nombre, @ImgUrl)
+			(@Name, @ImgUrl)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_Lenguaje_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_Lenguaje_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
 CREATE PROCEDURE PF_Lenguaje_Update
 	@Id INT,
-	@Nombre VARCHAR(50),
+	@Name VARCHAR(50),
 	@ImgUrl VARCHAR(256)
 AS
 BEGIN
@@ -853,15 +871,15 @@ BEGIN
 
 	BEGIN TRY
 		UPDATE PF_Lenguajes SET
-			Nombre = @Nombre,
+			Nombre = @Name,
 			ImgUrl = @ImgUrl
 		WHERE
 			Id = @Id
 
-		SELECT 202 AS StatusCode, @Id AS Id, 'Datos Modificados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Modificar los Datos (PF_Lenguaje_Update)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Modificar los Datos (PF_Lenguaje_Update)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
@@ -874,53 +892,57 @@ BEGIN
 
     IF NOT EXISTS (SELECT Id FROM PF_Lenguajes WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
     IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Leng WHERE Id_Proyecto = @Id)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'Existe Dependencia Con PF_Pro_Leng' AS Msge 
+			SELECT 400 AS StatusCode, 'Existe Dependencia Con PF_Pro_Leng' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		DELETE FROM PF_Lenguajes WHERE Id = @Id
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_Lenguaje_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_Lenguaje_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-CREATE PROCEDURE PF_Tecnologia_GetAll
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		Id,
-		Nombre,
-		ImgUrl
-	FROM PF_Tecnologias
-END
-GO
-
-CREATE PROCEDURE PF_Tecnologia_GetById
+CREATE PROCEDURE PF_Tecnologia_Get
 	@Id INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT
-		Id,
-		Nombre,
-		ImgUrl
-	FROM PF_Tecnologias
-	WHERE
-		Id = @Id
+	IF @Id < 0
+		BEGIN
+			SELECT 400 AS StatusCode, 'Ingrese un Id Valido' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	IF @Id = 0
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				ImgUrl
+			FROM PF_Tecnologias
+		END
+	ELSE
+		BEGIN
+			SELECT
+				Id,
+				Nombre AS Name,
+				ImgUrl
+			FROM PF_Tecnologias
+			WHERE
+				Id = @Id
+		END
 END
 GO
 
@@ -937,10 +959,10 @@ BEGIN
 		VALUES
 			(@Nombre, @ImgUrl)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_Tecnologia_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_Tecnologia_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
@@ -960,10 +982,10 @@ BEGIN
 		WHERE
 			Id = @Id
 
-		SELECT 202 AS StatusCode, @Id AS Id, 'Datos Modificados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Modificar los Datos (PF_Tecnologia_Update)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Modificar los Datos (PF_Tecnologia_Update)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
@@ -976,61 +998,61 @@ BEGIN
 
     IF NOT EXISTS (SELECT Id FROM PF_Tecnologias WHERE Id = @Id)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
     IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Tec WHERE Id_Proyecto = @Id)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'Existe Dependencia Con PF_Pro_Tec' AS Msge 
+			SELECT 400 AS StatusCode, 'Existe Dependencia Con PF_Pro_Tec' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
 		DELETE FROM PF_Tecnologias WHERE Id = @Id
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_Tecnologia_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_Tecnologia_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-CREATE PROCEDURE PF_ProLeng_GetAll
+CREATE PROCEDURE PF_ProLeng_Get
 AS
 BEGIN
 	SET NOCOUNT ON;
 
 	SELECT
-		Id_Proyecto,
-		Id_Lenguaje
+		Id_Proyecto AS Id_Project,
+		Id_Lenguaje AS Id_Language
 	FROM PF_Pro_Leng
 END
 GO
 
 CREATE PROCEDURE PF_ProLeng_Insert
-	@Id_Proyecto INT,
-	@Id_Lenguaje INT
+	@Id_Project INT,
+	@Id_Language INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT Id FROM PF_Proyectos WHERE Id = @Id_Proyecto)
+    IF NOT EXISTS (SELECT Id FROM PF_Proyectos WHERE Id = @Id_Project)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id_Proyecto No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id_Proyecto No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-    IF NOT EXISTS (SELECT Id FROM PF_Lenguajes WHERE Id = @Id_Lenguaje)
+    IF NOT EXISTS (SELECT Id FROM PF_Lenguajes WHERE Id = @Id_Language)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id_Lenguaje No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id_Lenguaje No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-	IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Leng WHERE Id_Proyecto = @Id_Proyecto AND Id_Lenguaje = @Id_Lenguaje)
+	IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Leng WHERE Id_Proyecto = @Id_Project AND Id_Lenguaje = @Id_Language)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Elemento ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Elemento ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
@@ -1038,74 +1060,74 @@ BEGIN
 		INSERT INTO PF_Pro_Leng
 			(Id_Proyecto, Id_Lenguaje)
 		VALUES
-			(@Id_Proyecto, @Id_Lenguaje)
+			(@Id_Project, @Id_Language)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_ProLeng_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_ProLeng_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
 CREATE PROCEDURE PF_ProLeng_Delete
-	@Id_Proyecto INT,
-	@Id_Lenguaje INT
+	@Id_Project INT,
+	@Id_Language INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT Id_Proyecto FROM PF_Pro_Leng WHERE Id_Proyecto = @Id_Proyecto AND Id_Lenguaje = @Id_Lenguaje)
+    IF NOT EXISTS (SELECT Id_Proyecto FROM PF_Pro_Leng WHERE Id_Proyecto = @Id_Project AND Id_Lenguaje = @Id_Language)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Elemento No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Elemento No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
-		DELETE FROM PF_Pro_Leng WHERE Id_Proyecto = @Id_Proyecto AND Id_Lenguaje = @Id_Lenguaje
+		DELETE FROM PF_Pro_Leng WHERE Id_Proyecto = @Id_Project AND Id_Lenguaje = @Id_Language
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_ProLeng_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_ProLeng_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-CREATE PROCEDURE PF_ProTec_GetAll
+CREATE PROCEDURE PF_ProTec_Get
 AS
 BEGIN
 	SET NOCOUNT ON;
 
 	SELECT
-		Id_Proyecto,
-		Id_Tecnologia
+		Id_Proyecto AS Id_Project,
+		Id_Tecnologia AS Id_Technology
 	FROM PF_Pro_Tec
 END
 GO
 
 CREATE PROCEDURE PF_ProTec_Insert
-	@Id_Proyecto INT,
-	@Id_Tecnologia INT
+	@Id_Project INT,
+	@Id_Technology INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT Id FROM PF_Proyectos WHERE Id = @Id_Proyecto)
+    IF NOT EXISTS (SELECT Id FROM PF_Proyectos WHERE Id = @Id_Project)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id_Proyecto No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id_Proyecto No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-    IF NOT EXISTS (SELECT Id FROM PF_Tecnologias WHERE Id = @Id_Tecnologia)
+    IF NOT EXISTS (SELECT Id FROM PF_Tecnologias WHERE Id = @Id_Technology)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Id_Tecnologia No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Id_Tecnologia No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
-	IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Tec WHERE Id_Proyecto = @Id_Proyecto AND Id_Tecnologia = @Id_Tecnologia)
+	IF EXISTS (SELECT Id_Proyecto FROM PF_Pro_Tec WHERE Id_Proyecto = @Id_Project AND Id_Tecnologia = @Id_Technology)
 		BEGIN
-			SELECT 400 AS StatusCode, 0 AS Id, 'El Elemento ya Existe' AS Msge
+			SELECT 400 AS StatusCode, 'El Elemento ya Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
@@ -1113,80 +1135,75 @@ BEGIN
 		INSERT INTO PF_Pro_Tec
 			(Id_Proyecto, Id_Tecnologia)
 		VALUES
-			(@Id_Proyecto, @Id_Tecnologia)
+			(@Id_Project, @Id_Technology)
 
-		SELECT 201 AS StatusCode, SCOPE_IDENTITY() AS Id, 'Datos Guardado Correctamente' AS Msge 
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Guardado los Datos (PF_ProTec_Insert)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (PF_ProTec_Insert)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
 CREATE PROCEDURE PF_ProTec_Delete
-	@Id_Proyecto INT,
-	@Id_Tecnologia INT
+	@Id_Project INT,
+	@Id_Technology INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT Id_Proyecto FROM PF_Pro_Tec WHERE Id_Proyecto = @Id_Proyecto AND Id_Tecnologia = @Id_Tecnologia)
+    IF NOT EXISTS (SELECT Id_Proyecto FROM PF_Pro_Tec WHERE Id_Proyecto = @Id_Project AND Id_Tecnologia = @Id_Technology)
 		BEGIN
-			SELECT 404 AS StatusCode, 0 AS Id, 'El Elemento No Existe' AS Msge 
+			SELECT 404 AS StatusCode, 'El Elemento No Existe' AS Msge, 0 AS Id
 			RETURN
 		END
 
 	BEGIN TRY
-		DELETE FROM PF_Pro_Tec WHERE Id_Proyecto = @Id_Proyecto AND Id_Tecnologia = @Id_Tecnologia
+		DELETE FROM PF_Pro_Tec WHERE Id_Proyecto = @Id_Project AND Id_Tecnologia = @Id_Technology
 
-		SELECT 202 AS StatusCode, 0 AS Id, 'Datos Eliminados Correctamente' AS Msge 
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
     END TRY
     BEGIN CATCH
-		SELECT 500 AS StatusCode, 0 AS Id, 'Error al Eliminar (PF_ProTec_Delete)' AS Msge 
+		SELECT 500 AS StatusCode, 'Error al Eliminar (PF_ProTec_Delete)' AS Msge, 0 AS Id
     END CATCH
 END
 GO
 
-DROP PROCEDURE PF_EnlaceGrp_GetAll
-DROP PROCEDURE PF_EnlaceGrp_GetById
+DROP PROCEDURE PF_EnlaceGrp_Get
 DROP PROCEDURE PF_EnlaceGrp_Insert
 DROP PROCEDURE PF_EnlaceGrp_Update
 DROP PROCEDURE PF_EnlaceGrp_Delete
-DROP PROCEDURE PF_Enlace_GetAll
-DROP PROCEDURE PF_Enlace_GetById
+DROP PROCEDURE PF_Enlace_Get
 DROP PROCEDURE PF_Enlace_Insert
 DROP PROCEDURE PF_Enlace_Update
 DROP PROCEDURE PF_Enlace_Delete
-DROP PROCEDURE PF_Youtube_GetAll
-DROP PROCEDURE PF_Youtube_GetById
+DROP PROCEDURE PF_Youtube_Get
 DROP PROCEDURE PF_Youtube_Insert
 DROP PROCEDURE PF_Youtube_Update
 DROP PROCEDURE PF_Youtube_Delete
-DROP PROCEDURE PF_Proyecto_GetAll
-DROP PROCEDURE PF_Proyecto_GetById
+DROP PROCEDURE PF_Proyecto_Get
 DROP PROCEDURE PF_Proyecto_Insert
 DROP PROCEDURE PF_Proyecto_Update
 DROP PROCEDURE PF_Proyecto_Delete
-DROP PROCEDURE PF_Lenguaje_GetAll
-DROP PROCEDURE PF_Lenguaje_GetById
+DROP PROCEDURE PF_Lenguaje_Get
 DROP PROCEDURE PF_Lenguaje_Insert
 DROP PROCEDURE PF_Lenguaje_Update
 DROP PROCEDURE PF_Lenguaje_Delete
-DROP PROCEDURE PF_Tecnologia_GetAll
-DROP PROCEDURE PF_Tecnologia_GetById
+DROP PROCEDURE PF_Tecnologia_Get
 DROP PROCEDURE PF_Tecnologia_Insert
 DROP PROCEDURE PF_Tecnologia_Update
 DROP PROCEDURE PF_Tecnologia_Delete
-DROP PROCEDURE PF_ProLeng_GetAll
+DROP PROCEDURE PF_ProLeng_Get
 DROP PROCEDURE PF_ProLeng_Insert
 DROP PROCEDURE PF_ProLeng_Delete
-DROP PROCEDURE PF_ProTec_GetAll
+DROP PROCEDURE PF_ProTec_Get
 DROP PROCEDURE PF_ProTec_Insert
 DROP PROCEDURE PF_ProTec_Delete
 
 -- Query --------------------------------------------------------
 -- --------------------------------------------------------------
-SELECT 0 AS StatusCode, 0 AS Id, '' AS Msge
+EXECUTE PF_EnlaceGrp_Get 0
+EXECUTE PF_EnlaceGrp_Get 1
 
 -- --------------------------------------------------------------
 -- --------------------------------------------------------------
