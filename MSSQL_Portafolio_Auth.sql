@@ -1,4 +1,4 @@
-
+USE db_testing
 
 -- Tablas -------------------------------------------------------
 -- --------------------------------------------------------------
@@ -22,7 +22,6 @@ CREATE TABLE Auth_Usuario (
 	FOREIGN KEY (Id_Perfil) REFERENCES Auth_Perfil(Id)
 )
 GO
-
 
 DROP TABLE Auth_Usuario
 DROP TABLE Auth_Perfil
